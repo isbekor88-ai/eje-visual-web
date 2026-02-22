@@ -1,0 +1,49 @@
+{
+  "items": [
+    {
+      "file": "redes__ejemplo-post-1.jpg",
+      "category": "redes",
+      "title": "Ejemplo Post 1"
+    },
+    {
+      "file": "redes__ejemplo-post-2.jpg",
+      "category": "redes",
+      "title": "Ejemplo Post 2"
+    },
+    {
+      "file": "promo__ejemplo-flyer.jpg",
+      "category": "promo",
+      "title": "Ejemplo Flyer"
+    },
+    {
+      "file": "marca__ejemplo-logo.jpg",
+      "category": "marca",
+      "title": "Ejemplo Logo"
+    },
+    {
+      "file": "web__ejemplo-landing.jpg",
+      "category": "web",
+      "title": "Ejemplo Landing"
+    },
+    {
+      "file": "musica__ejemplo-cover.jpg",
+      "category": "musica",
+      "title": "Ejemplo Cover"
+    },
+    {
+      "file": "reciente-1.jpg",
+      "category": "all",
+      "title": "Trabajo Reciente 1"
+    },
+    {
+      "file": "reciente-2.jpg",
+      "category": "all",
+      "title": "Trabajo Reciente 2"
+    },
+    {
+      "file": "reciente-3.jpg",
+      "category": "all",
+      "title": "Trabajo Reciente 3"
+    }
+  ]
+}
