@@ -27,6 +27,9 @@ let current = "all";
 let itemsAll = [];
 let selectedFrame = null;
 let selectedRestore = null;
+let rigEl = null;
+let tpReticle = null;
+let teleportHit = null;
 
 // ===== Helpers
 const $ = (id)=> document.getElementById(id);
@@ -485,10 +488,13 @@ function applyTheme(catKey){
   setEmissive($("stripR"), c, 1100);
 
   setLightColor($("ambientLight"), c, 1400);
-  setLightIntensity($("ambientLight"), 0.60, 1400);
+  setLightIntensity($("ambientLight"), 0.92, 1400);
 
   // console accent
   setEmissive($("consoleAccent"), c, 1100);
+  setLightColor($("hemiLight"), c, 1300);
+  setLightColor($("fillLightL"), c, 1300);
+  setLightColor($("fillLightR"), c, 1300);
 }
 
 // ===== Build all rooms once
@@ -502,18 +508,18 @@ function buildRooms(){
       ? itemsAll
       : itemsAll.filter(it => (it.category || "all").toLowerCase() === c.key);
 
-    const show = filtered.slice(0, 14);
+    const show = filtered.slice(0, 18);
     const wallX = 5.35;
     const y = 1.75;
     const startZ = c.z - 1.0; // near each room center
-    const stepZ = 2.55;
+    const stepZ = 2.25;
 
     let row = 0;
     for(let i=0;i<show.length;i++){
       const it = show[i];
       const file = it.file || it;
       const cat = (it.category || "all").toLowerCase();
-      const title = it.title || (file || "Proyecto").replace(/\.[^/.]+$/, "");
+      const title = (it.title || (file || "Proyecto").replace(/\.[^/.]+$/, "").replace(/^([a-z]+)(__|-|_)/i, "").replace(/[_-]+/g, " ")).trim();
       const sideLeft = (i % 2 === 0);
       const x = sideLeft ? -wallX : wallX;
       const z = startZ - row * stepZ;
@@ -553,6 +559,60 @@ function buildRooms(){
         accent: c.color
       });
     }
+  });
+}
+
+
+function setupTeleportRig(){
+  rigEl = $("rig");
+  tpReticle = $("tpReticle");
+  ["leftHand","rightHand"].forEach(id=>{
+    const hand = $(id);
+    if(!hand) return;
+
+    const updateReticle = ()=>{
+      const rc = hand.components && hand.components.raycaster;
+      if(!rc || !tpReticle || !rigEl) return;
+      const hit = rc.intersections && rc.intersections.find(i=> i && i.object && i.object.el && i.object.el.classList.contains("teleportable"));
+      teleportHit = hit || null;
+      if(hit){
+        const p = hit.point;
+        tpReticle.object3D.position.set(p.x, p.y + 0.01, p.z);
+        tpReticle.setAttribute("visible", "true");
+      }else if(teleportHit === null){
+        tpReticle.setAttribute("visible", "false");
+      }
+    };
+
+    hand.addEventListener("raycaster-intersection", updateReticle);
+    hand.addEventListener("raycaster-intersection-cleared", ()=>{
+      teleportHit = null;
+      if(tpReticle) tpReticle.setAttribute("visible", "false");
+    });
+
+    hand.addEventListener("triggerdown", ()=>{
+      if(!teleportHit || !rigEl) return;
+      const p = teleportHit.point;
+      rigEl.setAttribute("animation__vrtp", `property: position; dur: 240; easing: easeOutQuad; to: ${p.x.toFixed(2)} 0 ${p.z.toFixed(2)}`);
+      safeSetText("hint", "Teleportado. Usa el láser para moverte rápido.");
+      whoosh();
+    });
+
+    hand.addEventListener("axismove", (ev)=>{
+      if(!rigEl) return;
+      const axis = ev.detail && ev.detail.axis;
+      if(!axis || axis.length < 4) return;
+      const strafe = axis[2] || 0;
+      const forward = axis[3] || 0;
+      if(Math.abs(strafe) < 0.12 && Math.abs(forward) < 0.12) return;
+      const pos = rigEl.getAttribute("position") || {x:0,y:0,z:0};
+      const cam = $("playerCam");
+      const yaw = (cam && cam.object3D && cam.object3D.rotation) ? cam.object3D.rotation.y : 0;
+      const speed = 0.13;
+      const dx = (Math.sin(yaw) * -forward + Math.cos(yaw) * strafe) * speed;
+      const dz = (Math.cos(yaw) * -forward - Math.sin(yaw) * strafe) * speed;
+      rigEl.setAttribute("position", `${(pos.x + dx).toFixed(3)} 0 ${(pos.z + dz).toFixed(3)}`);
+    });
   });
 }
 
@@ -619,6 +679,7 @@ async function init(){
     itemsAll = await loadManifest();
     buildRooms();
     bindUI();
+    setupTeleportRig();
 
     // Headline ribbon
     loadHeadlines();

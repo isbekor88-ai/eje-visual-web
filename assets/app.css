@@ -1291,14 +1291,14 @@ body:hover .bg-reveal .tileGlow{ opacity: .38 !important; }
 
 
 /* ===== V23: Image color reveal on hover (cursor mask) ===== */
-.imgfx-onhover{ --reveal-x: 50%; --reveal-y: 50%; --reveal-r: 110px; }
+.imgfx-onhover{ --reveal-x: 50%; --reveal-y: 50%; --reveal-r: clamp(120px, 28%, 220px); }
 
 .imgColorReveal{
   position:absolute;
   inset:0;
   pointer-events:none;
   opacity:0;
-  transition: opacity .20s ease;
+  transition: opacity .18s ease;
   background-image: var(--img-url);
   background-size: var(--reveal-fit, cover);
   background-position: center;
@@ -1307,12 +1307,14 @@ body:hover .bg-reveal .tileGlow{ opacity: .38 !important; }
   /* mask: reveal only under cursor */
   -webkit-mask-image: radial-gradient(circle var(--reveal-r) at var(--reveal-x) var(--reveal-y),
     rgba(0,0,0,1) 0%,
-    rgba(0,0,0,.96) 26%,
-    rgba(0,0,0,0) 70%);
+    rgba(0,0,0,.98) 36%,
+    rgba(0,0,0,.18) 72%,
+    rgba(0,0,0,0) 92%);
           mask-image: radial-gradient(circle var(--reveal-r) at var(--reveal-x) var(--reveal-y),
     rgba(0,0,0,1) 0%,
-    rgba(0,0,0,.96) 26%,
-    rgba(0,0,0,0) 70%);
+    rgba(0,0,0,.98) 36%,
+    rgba(0,0,0,.18) 72%,
+    rgba(0,0,0,0) 92%);
 }
 
 /* only show on hover */
@@ -1324,4 +1326,11 @@ body:hover .bg-reveal .tileGlow{ opacity: .38 !important; }
 /* modal wrapper sizing */
 .imgfx-wrap .imgColorReveal{
   background-position: center;
+}
+
+
+/* touch/no-hover devices: keep image in color for usability */
+@media (hover: none), (pointer: coarse){
+  .work img{ filter: none; }
+  .imgColorReveal{ display:none; }
 }

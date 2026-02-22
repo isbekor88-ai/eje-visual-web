@@ -34,27 +34,31 @@
     renderer="colorManagement: true; physicallyCorrectLights: true;"
     xr-mode-ui="enabled: true;"
     background="color: #070707"
-    fog="type: exponential; color: #050505; density: 0.010"
+    fog="type: exponential; color: #0a0a0a; density: 0.006"
     loading-screen="dotsColor: white; backgroundColor: #070707">
 
     <a-assets timeout="15000">
       <img id="logoOutline" src="assets/logo-outline.png" />
       <img id="heroTex" src="assets/hero-portfolio.jpg" />
+      <img id="wallTex" src="https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=60" crossorigin="anonymous" />
     </a-assets>
 
     <!-- LIGHTS -->
-    <a-entity id="ambientLight" light="type: ambient; color: #00ffd0; intensity: 0.55"></a-entity>
-    <a-entity id="spot" light="type: spot; color: #ffffff; intensity: 0.95; angle: 40; penumbra: 0.75; distance: 28"
+    <a-entity id="ambientLight" light="type: ambient; color: #00ffd0; intensity: 0.9"></a-entity>
+    <a-entity id="spot" light="type: spot; color: #ffffff; intensity: 1.35; angle: 46; penumbra: 0.7; distance: 34"
               position="0 4.6 4.8" rotation="-58 180 0"></a-entity>
 
     <!-- Follow spotlight system -->
-    <a-entity id="followSpot" light="type: spot; color: #ffffff; intensity: 0.85; angle: 22; penumbra: 0.7; distance: 18"
+    <a-entity id="followSpot" light="type: spot; color: #ffffff; intensity: 1.05; angle: 26; penumbra: 0.65; distance: 24"
               position="0 4.3 0"></a-entity>
     <a-entity id="focusTarget" position="0 1.7 0"></a-entity>
+    <a-entity id="hemiLight" light="type: hemisphere; color: #b8fff4; groundColor: #1b1b1b; intensity: 0.5"></a-entity>
+    <a-entity id="fillLightL" position="-4 2.9 -20" light="type: point; color: #7be9ff; intensity: 0.55; distance: 24; decay: 1.8"></a-entity>
+    <a-entity id="fillLightR" position="4 2.9 -20" light="type: point; color: #ff9ef0; intensity: 0.55; distance: 24; decay: 1.8"></a-entity>
 
     <!-- FLOOR (polished) -->
-    <a-plane rotation="-90 0 0" width="26" height="96"
-      material="color:#060606; metalness:0.38; roughness:0.42;"></a-plane>
+    <a-plane class="teleportable" rotation="-90 0 0" width="26" height="96"
+      material="color:#101010; metalness:0.34; roughness:0.48;"></a-plane>
 
     <!-- LIGHT STRIPS -->
     <a-box id="stripL" position="-2.8 0.01 -22" width="0.06" height="0.02" depth="88"
@@ -64,11 +68,11 @@
 
     <!-- WALL BODY -->
     <a-box position="0 2 -22" width="26" height="6" depth="96"
-      material="color:#090909; metalness:0.18; roughness:0.78; emissive:#0a0a0a; emissiveIntensity:0.12;"></a-box>
+      material="src:#wallTex; color:#1a1a1a; metalness:0.08; roughness:0.82; repeat: 14 4; emissive:#0f0f0f; emissiveIntensity:0.2;"></a-box>
 
     <!-- INNER WALL SKIN (outline) -->
     <a-box position="0 2 -22" width="25.6" height="5.6" depth="95.6"
-      material="color:#0b0b0b; metalness:0.05; roughness:0.9; src:#logoOutline; repeat: 16 5; emissive:#ffffff; emissiveIntensity:0.05;">
+      material="color:#141414; metalness:0.06; roughness:0.82; src:#logoOutline; repeat: 18 6; emissive:#ffffff; emissiveIntensity:0.09;">
       <a-animation attribute="rotation" dur="140000" easing="linear" to="0 360 0" repeat="indefinite"></a-animation>
     </a-box>
 
@@ -85,16 +89,14 @@
     </a-box>
 
     <!-- 3D NEWS RIBBON -->
-    <a-entity position="0 4.55 5.8" rotation="0 180 0">
-      <a-plane width="12.8" height="0.50" material="color:#0b0b0b; emissive:#111; emissiveIntensity:0.16;"></a-plane>
-      <a-text id="newsTag" value="LOCAL" position="-6.0 0.10 0.02" width="3.2" color="#00ffd0"
+    <a-entity id="tickerRibbon" position="0 4.35 4.9" rotation="0 180 0">
+      <a-plane width="15.2" height="0.62" material="color:#101010; emissive:#1a1a1a; emissiveIntensity:0.3;"></a-plane>
+      <a-text id="newsTag" value="LOCAL" position="-7.2 0.12 0.02" width="3.6" color="#00ffd0"
         font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
-      <a-text id="newsText" value="Cargando headlines…" position="6.2 -0.02 0.02" width="18" color="#d9d9d9"
+      <a-text id="newsText" value="Cargando headlines…" position="7.1 -0.03 0.02" width="22" color="#d9d9d9"
         font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt" wrap-count="200"></a-text>
 
-      <!-- scroll animation for text -->
-      <a-animation attribute="rotation" dur="300000" to="0 360 0" easing="linear" repeat="indefinite"></a-animation>
-      <a-animation attribute="position" dur="22000" direction="alternate" repeat="indefinite" to="0 4.55 5.5" easing="easeInOutSine"></a-animation>
+      <a-animation attribute="position" dur="5000" direction="alternate" repeat="indefinite" to="0 4.39 4.72" easing="easeInOutSine"></a-animation>
     </a-entity>
 
     <!-- CENTER PEDESTAL PREVIEW (pop plane + normal preview) -->
@@ -189,32 +191,32 @@
 
     <!-- TELEPORT PADS -->
     <a-entity id="pads">
-      <a-cylinder id="pad_all" radius="0.38" height="0.02" position="-1.4 0.02 6.2"
+      <a-cylinder class="teleportable" id="pad_all" radius="0.38" height="0.02" position="-1.4 0.02 6.2"
         material="color:#0b0b0b; emissive:#00ffd0; emissiveIntensity:0.35;"></a-cylinder>
       <a-text value="TODO" position="-1.62 0.12 6.2" rotation="-90 0 0" width="2.5" color="#d9d9d9"
         font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
 
-      <a-cylinder id="pad_redes" radius="0.38" height="0.02" position="-1.4 0.02 -6.0"
+      <a-cylinder class="teleportable" id="pad_redes" radius="0.38" height="0.02" position="-1.4 0.02 -6.0"
         material="color:#0b0b0b; emissive:#00e5ff; emissiveIntensity:0.35;"></a-cylinder>
       <a-text value="REDES" position="-1.74 0.12 -6.0" rotation="-90 0 0" width="3.0" color="#d9d9d9"
         font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
 
-      <a-cylinder id="pad_promo" radius="0.38" height="0.02" position="-1.4 0.02 -18.0"
+      <a-cylinder class="teleportable" id="pad_promo" radius="0.38" height="0.02" position="-1.4 0.02 -18.0"
         material="color:#0b0b0b; emissive:#ff2bd6; emissiveIntensity:0.35;"></a-cylinder>
       <a-text value="PROMO" position="-1.78 0.12 -18.0" rotation="-90 0 0" width="3.0" color="#d9d9d9"
         font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
 
-      <a-cylinder id="pad_marca" radius="0.38" height="0.02" position="-1.4 0.02 -30.0"
+      <a-cylinder class="teleportable" id="pad_marca" radius="0.38" height="0.02" position="-1.4 0.02 -30.0"
         material="color:#0b0b0b; emissive:#ffd166; emissiveIntensity:0.35;"></a-cylinder>
       <a-text value="MARCA" position="-1.78 0.12 -30.0" rotation="-90 0 0" width="3.0" color="#d9d9d9"
         font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
 
-      <a-cylinder id="pad_web" radius="0.38" height="0.02" position="-1.4 0.02 -42.0"
+      <a-cylinder class="teleportable" id="pad_web" radius="0.38" height="0.02" position="-1.4 0.02 -42.0"
         material="color:#0b0b0b; emissive:#3a86ff; emissiveIntensity:0.35;"></a-cylinder>
       <a-text value="WEB" position="-1.64 0.12 -42.0" rotation="-90 0 0" width="2.5" color="#d9d9d9"
         font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
 
-      <a-cylinder id="pad_musica" radius="0.38" height="0.02" position="-1.4 0.02 -54.0"
+      <a-cylinder class="teleportable" id="pad_musica" radius="0.38" height="0.02" position="-1.4 0.02 -54.0"
         material="color:#0b0b0b; emissive:#25d366; emissiveIntensity:0.35;"></a-cylinder>
       <a-text value="MÚSICA" position="-1.88 0.12 -54.0" rotation="-90 0 0" width="3.2" color="#d9d9d9"
         font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
@@ -265,12 +267,14 @@
 
     <!-- CAMERA RIG -->
     <a-entity id="rig" position="0 0 6.2">
-      <a-entity camera position="0 1.6 0" look-controls wasd-controls="acceleration: 18">
+      <a-entity id="playerCam" camera position="0 1.6 0" look-controls wasd-controls="acceleration: 28; fly: false">
         <a-cursor fuse="false" raycaster="objects: .clickable" color="#00ffd0"></a-cursor>
       </a-entity>
 
-      <a-entity laser-controls="hand: right" raycaster="objects: .clickable" line="color: #00ffd0; opacity: 0.9"></a-entity>
-      <a-entity laser-controls="hand: left"  raycaster="objects: .clickable" line="color: #00ffd0; opacity: 0.7"></a-entity>
+      <a-entity id="rightHand" laser-controls="hand: right" raycaster="objects: .clickable, .teleportable" line="color: #00ffd0; opacity: 0.92"></a-entity>
+      <a-entity id="leftHand"  laser-controls="hand: left" raycaster="objects: .clickable, .teleportable" line="color: #66b8ff; opacity: 0.85"></a-entity>
+      <a-ring id="tpReticle" visible="false" radius-inner="0.20" radius-outer="0.28" rotation="-90 0 0"
+        material="color:#00ffd0; emissive:#00ffd0; emissiveIntensity:0.75; opacity:0.95; transparent:true"></a-ring>
     </a-entity>
 
     <script src="assets/sfx.js"></script>

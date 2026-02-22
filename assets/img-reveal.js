@@ -8,6 +8,22 @@
  *  - modal image (#modalImg)
  */
 (function(){
+  function initScope(root){
+    const scope = root && root.querySelectorAll ? root : document;
+    scope.querySelectorAll(".work").forEach(w=>{
+      const img = w.querySelector("img");
+      setupContainer(w, img, "cover");
+    });
+    scope.querySelectorAll(".hero-visual").forEach(h=>{
+      const img = h.querySelector("img");
+      setupContainer(h, img, "cover");
+    });
+    scope.querySelectorAll(".screen").forEach(s=>{
+      const img = s.querySelector("img");
+      setupContainer(s, img, "cover");
+    });
+  }
+
   function setupContainer(container, img, fit){
     if(!container || !img) return;
     if(container.dataset.imgRevealInit === "1") return;
@@ -60,18 +76,7 @@
   }
 
   function init(){
-    document.querySelectorAll(".work").forEach(w=>{
-      const img = w.querySelector("img");
-      setupContainer(w, img, "cover");
-    });
-    document.querySelectorAll(".hero-visual").forEach(h=>{
-      const img = h.querySelector("img");
-      setupContainer(h, img, "cover");
-    });
-    document.querySelectorAll(".screen").forEach(s=>{
-      const img = s.querySelector("img");
-      setupContainer(s, img, "cover");
-    });
+    initScope(document);
 
     // Modal: wrap the img so we don't affect header inside .box
     const modalImg = document.getElementById("modalImg");
@@ -85,7 +90,24 @@
       wrap.appendChild(modalImg);
       setupContainer(wrap, modalImg, "contain");
     }
+
+    // dynamic cards (portfolio loads async)
+    const mo = new MutationObserver((muts)=>{
+      muts.forEach(m=>{
+        m.addedNodes.forEach(node=>{
+          if(!(node instanceof Element)) return;
+          if(node.matches?.(".work, .hero-visual, .screen")){
+            initScope(node.parentElement || document);
+          }else if(node.querySelector){
+            initScope(node);
+          }
+        });
+      });
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
   }
+
+  window.EV_initImgReveal = initScope;
 
   // Run after DOM
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
