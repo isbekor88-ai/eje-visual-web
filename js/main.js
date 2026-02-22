@@ -4,6 +4,18 @@
   const menuBtn = document.getElementById('menuToggle');
   const mobileMenu = document.getElementById('mobileMenu');
   const links = [...document.querySelectorAll('a[data-scroll]')];
+  const trackedLinks = [...document.querySelectorAll('a[data-track]')];
+  const trackedForms = [...document.querySelectorAll('form[data-track-submit]')];
+
+  function trackEvent(name, params = {}) {
+    if (!name) return;
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', name, params);
+    }
+    if (typeof window.plausible === 'function') {
+      window.plausible(name, { props: params });
+    }
+  }
 
   // Theme persistence
   const saved = localStorage.getItem('ejevisual_theme');
@@ -41,6 +53,23 @@
     mobileMenu.classList.remove('open');
     menuBtn?.setAttribute('aria-expanded','false');
   }));
+
+  trackedLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      trackEvent(link.dataset.track, {
+        target: link.getAttribute('href') || '',
+        text: (link.textContent || '').trim()
+      });
+    });
+  });
+
+  trackedForms.forEach(form => {
+    form.addEventListener('submit', () => {
+      trackEvent(form.dataset.trackSubmit, {
+        form_id: form.id || form.name || 'form'
+      });
+    });
+  });
 
   // Active section highlight
   const sections = [...document.querySelectorAll('section[id]')];

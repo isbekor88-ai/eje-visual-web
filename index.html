@@ -19,7 +19,7 @@
   <meta property="og:type" content="website" />
 
   <link rel="stylesheet" href="css/styles.css" />
-  <link rel="canonical" href="/" />
+  <link rel="canonical" href="https://www.ejevisual.mx/" />
   <meta property="og:image" content="assets/img/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -58,7 +58,7 @@
             <span class="sr-only" id="themeLabel">Oscuro</span>
           </button>
 
-          <a class="btn primary" href="#contacto" data-scroll> Cotizar ahora </a>
+          <a class="btn primary" href="#contacto" data-scroll data-track="cta_header_quote"> Cotizar ahora </a>
 
           <button class="btn iconbtn hamburger" id="menuToggle" type="button" aria-label="Abrir menú" aria-expanded="false">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -92,13 +92,13 @@
           </p>
 
           <div class="cta">
-            <a class="btn primary" href="#servicios" data-scroll>
+            <a class="btn primary" href="#servicios" data-scroll data-track="cta_hero_services">
               <span>Ver servicios</span>
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/>
               </svg>
             </a>
-            <a class="btn" href="#contacto" data-scroll>Solicitar diseño</a>
+            <a class="btn" href="#contacto" data-scroll data-track="cta_hero_request">Solicitar diseño</a>
           </div>
 
           <div class="reinforce">Lo que haces hoy, se nota mañana.</div>
@@ -116,7 +116,7 @@
             </div>
           </div>
 
-          <p style="margin-top:14px" class="muted">
+          <p class="muted mt-14">
             Si tu negocio se ve profesional, la gente confía. Aquí no vendemos “arte”: vendemos diseño funcional que ayuda a vender, comunicar y crecer.
           </p>
 
@@ -240,9 +240,9 @@
         </article>
       </div>
 
-      <div style="margin-top:16px" class="note">
+      <div class="note mt-16">
         <b>¿Por qué Eje Visual?</b>
-        <div class="muted" style="margin-top:6px">
+        <div class="muted mt-6">
           ✔ Precio claro antes de iniciar · ✔ Proceso simple · ✔ Entrega rápida · ✔ Comunicación directa · ✔ Sin complicaciones
         </div>
       </div>
@@ -319,15 +319,15 @@
             <li>Complejidad del contenido</li>
             <li>Formato requerido (digital / impresión)</li>
           </ul>
-          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap">
-            <a class="btn primary" href="#contacto" data-scroll>Solicitar cotización</a>
+          <div class="actions-row mt-14">
+            <a class="btn primary" href="#contacto" data-scroll data-track="cta_pricing_quote">Solicitar cotización</a>
             <a class="btn" href="#servicios" data-scroll>Ver servicios</a>
           </div>
         </div>
 
         <div class="note">
           <b>Tip práctico</b>
-          <p class="muted" style="margin-top:8px">
+          <p class="muted mt-8">
             Entre más claro tengas tu objetivo (venta, evento, anuncio, branding), más rápido avanzamos.
             Si no lo tienes, lo definimos contigo.
           </p>
@@ -349,7 +349,7 @@
 
       <div class="portfolio">
         <div class="work">
-          <div class="thumb" style="background-image:url('assets/img/portfolio/express.jpg');" aria-hidden="true"></div>
+          <div class="thumb thumb-express" aria-hidden="true"></div>
           <div class="body">
             <b>Diseño Express</b>
             <span>Objetivo: promo urgente · Resultado: mensaje claro, listo para publicar.</span>
@@ -357,7 +357,7 @@
         </div>
 
         <div class="work">
-          <div class="thumb" style="background-image:url('assets/img/portfolio/redes.jpg');" aria-hidden="true"></div>
+          <div class="thumb thumb-redes" aria-hidden="true"></div>
           <div class="body">
             <b>Publicidad para Redes</b>
             <span>Objetivo: ventas · Resultado: piezas vertical/cuadrado optimizadas.</span>
@@ -365,7 +365,7 @@
         </div>
 
         <div class="work">
-          <div class="thumb" style="background-image:url('assets/img/portfolio/identidad.jpg');" aria-hidden="true"></div>
+          <div class="thumb thumb-identidad" aria-hidden="true"></div>
           <div class="body">
             <b>Identidad Visual</b>
             <span>Objetivo: coherencia · Resultado: base visual lista para crecer.</span>
@@ -389,13 +389,13 @@
         <div class="contactcards">
           <div class="contactcard">
             <div class="tag">Facebook</div>
-            <h3 style="margin:10px 0 6px">EjeVisualMX</h3>
+            <h3 class="contactcard-title">EjeVisualMX</h3>
             <a href="https://www.facebook.com/EjeVisualMX" target="_blank" rel="noopener noreferrer">Abrir Facebook</a>
           </div>
 
           <div class="contactcard">
             <div class="tag">Teléfono / WhatsApp</div>
-            <h3 style="margin:10px 0 6px">(663) 322-0567</h3>
+            <h3 class="contactcard-title">(663) 322-0567</h3>
             <a href="tel:+526633220567">Llamar</a>
             <span class="muted"> · </span>
             <a href="https://wa.me/526633220567" target="_blank" rel="noopener noreferrer">WhatsApp</a>
@@ -403,18 +403,18 @@
 
           <div class="contactcard">
             <div class="tag">Correo</div>
-            <h3 style="margin:10px 0 6px">ejevisualtj@gmail.com</h3>
+            <h3 class="contactcard-title">ejevisualtj@gmail.com</h3>
             <a href="mailto:ejevisualtj@gmail.com">Enviar correo</a>
           </div>
 
           <div class="contactcard">
             <div class="tag">Horario</div>
-            <h3 style="margin:10px 0 6px">10:00 AM – 6:00 PM</h3>
+            <h3 class="contactcard-title">10:00 AM – 6:00 PM</h3>
             <div class="muted">Atención directa, sin vueltas.</div>
           </div>
         </div>
 
-        <form id="leadForm" aria-label="Formulario de solicitud" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/gracias/">
+        <form id="leadForm" aria-label="Formulario de solicitud" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/gracias/" data-track-submit="form_lead_submit">
           <input type="hidden" name="form-name" value="contact" />
           <p class="sr-only">
             <label>Si eres humano, deja este campo vacío: <input name="bot-field" /></label>
@@ -464,12 +464,11 @@
 
           <button class="btn primary" type="submit">Enviar solicitud</button>
 
-          <p class="muted" style="margin-top:10px">
+          <p class="muted mt-10">
             Al enviar, recibimos tu solicitud en segundos. Te respondemos por el medio que elegiste (WhatsApp / llamada / correo).
           </p>
         </form>
       </div>
-</div>
     </div>
   </section>
 
@@ -477,7 +476,7 @@
     <div class="container">
       <div class="footergrid">
         <div>
-          <div class="brand" style="min-width:auto">
+          <div class="brand brand-footer">
             <img src="assets/img/logo.png" alt="" aria-hidden="true" onerror="this.style.display='none'"/>
             <div class="title">
               <strong>EJE VISUAL</strong>
@@ -489,7 +488,7 @@
 
         <div>
           <h4>Enlaces</h4>
-          <div style="display:grid; gap:8px">
+          <div class="linklist">
             <a href="#home" data-scroll>Home</a>
             <a href="#servicios" data-scroll>Servicios</a>
             <a href="#proceso" data-scroll>Proceso</a>
@@ -500,7 +499,7 @@
 
         <div>
           <h4>Contacto directo</h4>
-          <div style="display:grid; gap:8px">
+          <div class="linklist">
             <a href="tel:+526633220567">(663) 322-0567</a>
             <a href="mailto:ejevisualtj@gmail.com">ejevisualtj@gmail.com</a>
             <a href="https://www.facebook.com/EjeVisualMX" target="_blank" rel="noopener noreferrer">Facebook: EjeVisualMX</a>
@@ -512,10 +511,5 @@
 
   <script src="js/main.js" defer></script>
 
-  <style>
-    /* small helper classes */
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    #toast.show{display:block}
-  </style>
 </body>
 </html>
