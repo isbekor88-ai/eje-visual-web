@@ -1,0 +1,159 @@
+{
+  "items": [
+    {
+      "file": "marca__elite-de-jaguar.jpg",
+      "category": "marca",
+      "title": "Elite De Jaguar"
+    },
+    {
+      "file": "marca__los-nahuales.jpg",
+      "category": "marca",
+      "title": "Los Nahuales"
+    },
+    {
+      "file": "marca__los-pantos-podcast.jpg",
+      "category": "marca",
+      "title": "Los Pantos Podcast"
+    },
+    {
+      "file": "marca__ubersquad.jpg",
+      "category": "marca",
+      "title": "Ubersquad"
+    },
+    {
+      "file": "marca__princesa-del-hip-hop.jpg",
+      "category": "marca",
+      "title": "Princesa Del Hip Hop"
+    },
+    {
+      "file": "marca__el-jalez.jpg",
+      "category": "marca",
+      "title": "El Jalez"
+    },
+    {
+      "file": "marca__alicia-ocho-nails.jpg",
+      "category": "marca",
+      "title": "Alicia Ocho Nails"
+    },
+    {
+      "file": "marca__abarrotes-brillos.jpg",
+      "category": "marca",
+      "title": "Abarrotes Brillos"
+    },
+    {
+      "file": "redes__social-media.jpg",
+      "category": "redes",
+      "title": "Social Media"
+    },
+    {
+      "file": "redes__youtube-phone.jpg",
+      "category": "redes",
+      "title": "YouTube Phone"
+    },
+    {
+      "file": "redes__ejemplo-post-1.jpg",
+      "category": "redes",
+      "title": "Post Promocional 1"
+    },
+    {
+      "file": "redes__ejemplo-post-2.jpg",
+      "category": "redes",
+      "title": "Post Promocional 2"
+    },
+    {
+      "file": "promo__ejemplo-flyer.jpg",
+      "category": "promo",
+      "title": "Flyer Promocional"
+    },
+    {
+      "file": "promo__flyers-muro.jpg",
+      "category": "promo",
+      "title": "Flyers en Muro"
+    },
+    {
+      "file": "promo__billboard-ciudad.jpg",
+      "category": "promo",
+      "title": "Billboard Ciudad"
+    },
+    {
+      "file": "promo__posters-calle.jpg",
+      "category": "promo",
+      "title": "Posters en Calle"
+    },
+    {
+      "file": "marca__ejemplo-logo.jpg",
+      "category": "marca",
+      "title": "Logo de Marca"
+    },
+    {
+      "file": "marca__logo-proceso.jpg",
+      "category": "marca",
+      "title": "Proceso de Logo"
+    },
+    {
+      "file": "marca__tablet-mockup.jpg",
+      "category": "marca",
+      "title": "Aplicación en Tablet"
+    },
+    {
+      "file": "web__ejemplo-landing.jpg",
+      "category": "web",
+      "title": "Landing Page"
+    },
+    {
+      "file": "web__dev-desk.jpg",
+      "category": "web",
+      "title": "Desarrollo Web"
+    },
+    {
+      "file": "web__frame-mockup.jpg",
+      "category": "web",
+      "title": "Mockup Web"
+    },
+    {
+      "file": "apps__mockup-phone.jpg",
+      "category": "apps",
+      "title": "Mockup App en Teléfono"
+    },
+    {
+      "file": "programas__workflow.jpg",
+      "category": "programas",
+      "title": "Flujo de Programa"
+    },
+    {
+      "file": "programas__dark-room-setup.jpg",
+      "category": "programas",
+      "title": "Setup de Sistema"
+    },
+    {
+      "file": "musica__ejemplo-cover.jpg",
+      "category": "musica",
+      "title": "Cover Musical"
+    },
+    {
+      "file": "musica__radio-mic.jpg",
+      "category": "musica",
+      "title": "Grabación en Radio"
+    },
+    {
+      "file": "musica__studio-mic.jpg",
+      "category": "musica",
+      "title": "Micrófono de Estudio"
+    },
+    {
+      "file": "los-dos-amigos.jpg",
+      "category": "all",
+      "title": "los-dos-amigos"
+    },
+    {
+      "file": "yonke-los-nonos.jpg",
+      "category": "all",
+      "title": "yonke-los-nonos"
+    },
+    {
+      "file": "yonke-el-tiburon.jpg",
+      "category": "all",
+      "title": "yonke-el-tiburon"
+    }
+  ]
+}
