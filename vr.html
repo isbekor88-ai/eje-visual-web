@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EJE VISUAL — VR Museo Premium</title>
+  <meta name="theme-color" content="#0b0b0b" />
+  <style>
+    html,body{ height:100%; margin:0; background:#070707; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+    .fallback{
+      position: fixed; left: 12px; top: 12px; z-index: 10;
+      color: rgba(255,255,255,.84);
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.16);
+      padding: 10px 12px;
+      border-radius: 14px;
+      backdrop-filter: blur(10px);
+      font-size: 12px;
+      max-width: 460px;
+    }
+    .fallback b{ color: #fff; }
+    .fallback a{ color:#25D366; text-decoration:none; font-weight:800; }
+  </style>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+</head>
+<body>
+  <div class="fallback">
+    <b>VR Museo Premium</b> · Meta Quest / Desktop Demo<br>
+    Para cargar portafolio (manifest) usa servidor local: <b>python -m http.server</b><br>
+    <a href="index.html">Volver al sitio</a>
+  </div>
+
+  <a-scene
+    renderer="colorManagement: true; physicallyCorrectLights: true;"
+    xr-mode-ui="enabled: true;"
+    background="color: #070707"
+    fog="type: exponential; color: #0a0a0a; density: 0.006"
+    loading-screen="dotsColor: white; backgroundColor: #070707">
+
+    <a-assets timeout="15000">
+      <img id="logoOutline" src="assets/logo-outline.png" />
+      <img id="heroTex" src="assets/hero-portfolio.jpg" />
+      <img id="wallTex" src="https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=60" crossorigin="anonymous" />
+    </a-assets>
+
+    <!-- LIGHTS -->
+    <a-entity id="ambientLight" light="type: ambient; color: #00ffd0; intensity: 0.9"></a-entity>
+    <a-entity id="spot" light="type: spot; color: #ffffff; intensity: 1.35; angle: 46; penumbra: 0.7; distance: 34"
+              position="0 4.6 4.8" rotation="-58 180 0"></a-entity>
+
+    <!-- Follow spotlight system -->
+    <a-entity id="followSpot" light="type: spot; color: #ffffff; intensity: 1.05; angle: 26; penumbra: 0.65; distance: 24"
+              position="0 4.3 0"></a-entity>
+    <a-entity id="focusTarget" position="0 1.7 0"></a-entity>
+    <a-entity id="hemiLight" light="type: hemisphere; color: #b8fff4; groundColor: #1b1b1b; intensity: 0.5"></a-entity>
+    <a-entity id="fillLightL" position="-4 2.9 -20" light="type: point; color: #7be9ff; intensity: 0.55; distance: 24; decay: 1.8"></a-entity>
+    <a-entity id="fillLightR" position="4 2.9 -20" light="type: point; color: #ff9ef0; intensity: 0.55; distance: 24; decay: 1.8"></a-entity>
+
+    <!-- FLOOR (polished) -->
+    <a-plane class="teleportable" rotation="-90 0 0" width="26" height="96"
+      material="color:#101010; metalness:0.34; roughness:0.48;"></a-plane>
+
+    <!-- LIGHT STRIPS -->
+    <a-box id="stripL" position="-2.8 0.01 -22" width="0.06" height="0.02" depth="88"
+      material="color:#0a0a0a; emissive:#00ffd0; emissiveIntensity:0.35; metalness:0.1; roughness:0.6;"></a-box>
+    <a-box id="stripR" position="2.8 0.01 -22" width="0.06" height="0.02" depth="88"
+      material="color:#0a0a0a; emissive:#00ffd0; emissiveIntensity:0.35; metalness:0.1; roughness:0.6;"></a-box>
+
+    <!-- WALL BODY -->
+    <a-box position="0 2 -22" width="26" height="6" depth="96"
+      material="src:#wallTex; color:#1a1a1a; metalness:0.08; roughness:0.82; repeat: 14 4; emissive:#0f0f0f; emissiveIntensity:0.2;"></a-box>
+
+    <!-- INNER WALL SKIN (outline) -->
+    <a-box position="0 2 -22" width="25.6" height="5.6" depth="95.6"
+      material="color:#141414; metalness:0.06; roughness:0.82; src:#logoOutline; repeat: 18 6; emissive:#ffffff; emissiveIntensity:0.09;">
+      <a-animation attribute="rotation" dur="140000" easing="linear" to="0 360 0" repeat="indefinite"></a-animation>
+    </a-box>
+
+    <!-- CEILING: rings per zone -->
+    <a-ring id="ceilingRing" position="0 5.05 5.0" rotation="90 0 0" radius-inner="2.9" radius-outer="3.35"
+      material="color:#0b0b0b; emissive:#00ffd0; emissiveIntensity:0.35; metalness:0.15; roughness:0.7;">
+      <a-animation attribute="material.emissiveIntensity" dur="2800" dir="alternate" to="0.62" repeat="indefinite"></a-animation>
+    </a-ring>
+
+    <!-- SCANNING LIGHT -->
+    <a-box position="0 4.92 -22" width="12" height="0.02" depth="0.08"
+      material="color:#0b0b0b; emissive:#ffffff; emissiveIntensity:0.12;">
+      <a-animation attribute="position" dur="11000" easing="easeInOutSine" to="0 4.92 -70" direction="alternate" repeat="indefinite"></a-animation>
+    </a-box>
+
+    <!-- 3D NEWS RIBBON -->
+    <a-entity id="tickerRibbon" position="0 4.35 4.9" rotation="0 180 0">
+      <a-plane width="15.2" height="0.62" material="color:#101010; emissive:#1a1a1a; emissiveIntensity:0.3;"></a-plane>
+      <a-text id="newsTag" value="LOCAL" position="-7.2 0.12 0.02" width="3.6" color="#00ffd0"
+        font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+      <a-text id="newsText" value="Cargando headlines…" position="7.1 -0.03 0.02" width="22" color="#d9d9d9"
+        font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt" wrap-count="200"></a-text>
+
+      <a-animation attribute="position" dur="5000" direction="alternate" repeat="indefinite" to="0 4.39 4.72" easing="easeInOutSine"></a-animation>
+    </a-entity>
+
+    <!-- CENTER PEDESTAL PREVIEW (pop plane + normal preview) -->
+    <a-entity id="viewer" position="0 1.15 1.9">
+      <a-box width="3.0" height="1.70" depth="0.16"
+        material="color:#0b0b0b; metalness:0.08; roughness:0.95; emissive:#111; emissiveIntensity:0.22;"></a-box>
+
+      <a-plane id="previewPlane" width="2.80" height="1.34" position="0 0.10 0.10"
+        material="src:#heroTex; color:#fff; metalness:0; roughness:1;"></a-plane>
+
+      <a-text id="previewTitle" value="EJE VISUAL" position="-1.38 -0.80 0.11" width="3.4" color="#EDEDED"
+        font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt" wrap-count="28"></a-text>
+
+      <a-text id="hint" value="Cargando portafolio…" position="-1.38 -1.04 0.11" width="3.9"
+        color="#a8a8a8" font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt" wrap-count="50"></a-text>
+    </a-entity>
+
+    <!-- Pop-out plane (front floating) -->
+    <a-plane id="popPlane" visible="false" width="3.25" height="1.65" position="0 2.35 0.95"
+      material="src:#heroTex; color:#fff; metalness:0; roughness:1;"></a-plane>
+    <a-text id="popTitle" value="EJE VISUAL" position="-1.55 1.50 0.95" width="4.0" color="#ffffff"
+      font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+
+    <!-- MUSEUM CONSOLE (categories + tour) -->
+    <a-entity position="0 1.35 6.6" rotation="0 180 0">
+      <a-box width="6.8" height="1.10" depth="0.24"
+        material="color:#0b0b0b; metalness:0.12; roughness:0.85; emissive:#101010; emissiveIntensity:0.18;"></a-box>
+
+      <a-box id="consoleAccent" position="0 0.50 0.10" width="6.4" height="0.02" depth="0.02"
+        material="color:#0b0b0b; emissive:#00ffd0; emissiveIntensity:0.35;"></a-box>
+
+      <a-text value="EJE VISUAL — VR MUSEO" position="-3.2 0.34 0.12" width="7.6" color="#ffffff"
+        font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+
+      <a-text id="catLabel" value="TODO" position="2.75 0.34 0.12" width="2.6" color="#00ffd0"
+        font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+
+      <!-- Buttons row -->
+      <a-entity position="-3.2 -0.06 0.12">
+        <a-plane id="cat_all" width="0.78" height="0.22" material="color:#111; emissive:#ffffff; emissiveIntensity:0.12;"></a-plane>
+        <a-text value="TODO" position="-0.32 -0.08 0.01" width="1.6" color="#d9d9d9" font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+      </a-entity>
+
+      <a-entity position="-2.30 -0.06 0.12">
+        <a-plane id="cat_redes" width="0.92" height="0.22" material="color:#111; emissive:#ffffff; emissiveIntensity:0.12;"></a-plane>
+        <a-text value="REDES" position="-0.40 -0.08 0.01" width="2.0" color="#d9d9d9" font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+      </a-entity>
+
+      <a-entity position="-1.26 -0.06 0.12">
+        <a-plane id="cat_promo" width="0.92" height="0.22" material="color:#111; emissive:#ffffff; emissiveIntensity:0.12;"></a-plane>
+        <a-text value="PROMO" position="-0.40 -0.08 0.01" width="2.0" color="#d9d9d9" font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+      </a-entity>
+
+      <a-entity position="-0.22 -0.06 0.12">
+        <a-plane id="cat_marca" width="0.92" height="0.22" material="color:#111; emissive:#ffffff; emissiveIntensity:0.12;"></a-plane>
+        <a-text value="MARCA" position="-0.40 -0.08 0.01" width="2.0" color="#d9d9d9" font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+      </a-entity>
+
+      <a-entity position="0.82 -0.06 0.12">
+        <a-plane id="cat_web" width="0.78" height="0.22" material="color:#111; emissive:#ffffff; emissiveIntensity:0.12;"></a-plane>
+        <a-text value="WEB" position="-0.32 -0.08 0.01" width="1.6" color="#d9d9d9" font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+      </a-entity>
+
+      <a-entity position="1.72 -0.06 0.12">
+        <a-plane id="cat_musica" width="1.02" height="0.22" material="color:#111; emissive:#ffffff; emissiveIntensity:0.12;"></a-plane>
+        <a-text value="MÚSICA" position="-0.44 -0.08 0.01" width="2.2" color="#d9d9d9" font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+      </a-entity>
+
+      <a-entity position="2.92 -0.06 0.12">
+        <a-plane id="tourBtn" width="0.86" height="0.22" material="color:#111; emissive:#ffffff; emissiveIntensity:0.12;"></a-plane>
+        <a-text id="tourLabel" value="TOUR: OFF" position="-0.40 -0.08 0.01" width="2.3" color="#d9d9d9"
+          font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+      </a-entity>
+    </a-entity>
+
+    <!-- QUICK ACTIONS -->
+    <a-entity position="0 0.92 8.3" rotation="0 180 0">
+      <a-plane width="4.6" height="0.74" material="color:#0b0b0b; emissive:#111; emissiveIntensity:0.16;"></a-plane>
+
+      <a-entity id="backToSite" position="-1.55 0 0.02">
+        <a-plane width="1.55" height="0.30" material="color:#111; emissive:#ffffff; emissiveIntensity:0.12;"></a-plane>
+        <a-text value="VOLVER" position="-0.66 -0.08 0.01" width="2.2" color="#d9d9d9"
+          font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+      </a-entity>
+
+      <a-entity id="waBtn" position="1.20 0 0.02">
+        <a-plane width="1.90" height="0.30" material="color:#25D366; emissive:#25D366; emissiveIntensity:0.45;"></a-plane>
+        <a-text value="WHATSAPP" position="-0.80 -0.08 0.01" width="2.8" color="#0b0b0b"
+          font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+      </a-entity>
+    </a-entity>
+
+    <!-- TELEPORT PADS -->
+    <a-entity id="pads">
+      <a-cylinder class="teleportable" id="pad_all" radius="0.38" height="0.02" position="-1.4 0.02 6.2"
+        material="color:#0b0b0b; emissive:#00ffd0; emissiveIntensity:0.35;"></a-cylinder>
+      <a-text value="TODO" position="-1.62 0.12 6.2" rotation="-90 0 0" width="2.5" color="#d9d9d9"
+        font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+
+      <a-cylinder class="teleportable" id="pad_redes" radius="0.38" height="0.02" position="-1.4 0.02 -6.0"
+        material="color:#0b0b0b; emissive:#00e5ff; emissiveIntensity:0.35;"></a-cylinder>
+      <a-text value="REDES" position="-1.74 0.12 -6.0" rotation="-90 0 0" width="3.0" color="#d9d9d9"
+        font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+
+      <a-cylinder class="teleportable" id="pad_promo" radius="0.38" height="0.02" position="-1.4 0.02 -18.0"
+        material="color:#0b0b0b; emissive:#ff2bd6; emissiveIntensity:0.35;"></a-cylinder>
+      <a-text value="PROMO" position="-1.78 0.12 -18.0" rotation="-90 0 0" width="3.0" color="#d9d9d9"
+        font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+
+      <a-cylinder class="teleportable" id="pad_marca" radius="0.38" height="0.02" position="-1.4 0.02 -30.0"
+        material="color:#0b0b0b; emissive:#ffd166; emissiveIntensity:0.35;"></a-cylinder>
+      <a-text value="MARCA" position="-1.78 0.12 -30.0" rotation="-90 0 0" width="3.0" color="#d9d9d9"
+        font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+
+      <a-cylinder class="teleportable" id="pad_web" radius="0.38" height="0.02" position="-1.4 0.02 -42.0"
+        material="color:#0b0b0b; emissive:#3a86ff; emissiveIntensity:0.35;"></a-cylinder>
+      <a-text value="WEB" position="-1.64 0.12 -42.0" rotation="-90 0 0" width="2.5" color="#d9d9d9"
+        font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+
+      <a-cylinder class="teleportable" id="pad_musica" radius="0.38" height="0.02" position="-1.4 0.02 -54.0"
+        material="color:#0b0b0b; emissive:#25d366; emissiveIntensity:0.35;"></a-cylinder>
+      <a-text value="MÚSICA" position="-1.88 0.12 -54.0" rotation="-90 0 0" width="3.2" color="#d9d9d9"
+        font="https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"></a-text>
+    </a-entity>
+
+    <!-- SCULPTURES (minimal premium) -->
+    <a-entity id="sculptures">
+      <a-cylinder position="0 0.6 -10" radius="0.35" height="1.2" material="color:#0b0b0b; metalness:0.22; roughness:0.65; emissive:#111; emissiveIntensity:0.12;"></a-cylinder>
+      <a-ring position="0 1.35 -10" rotation="90 0 0" radius-inner="0.35" radius-outer="0.52"
+        material="color:#0b0b0b; emissive:#00ffd0; emissiveIntensity:0.25;">
+        <a-animation attribute="rotation" dur="22000" to="90 360 0" easing="linear" repeat="indefinite"></a-animation>
+      </a-ring>
+
+      <a-box position="0 0.55 -34" width="0.7" height="1.1" depth="0.22"
+        material="color:#0b0b0b; metalness:0.35; roughness:0.55; emissive:#111; emissiveIntensity:0.12;"></a-box>
+      <a-box position="0 1.35 -34" width="0.8" height="0.06" depth="0.28"
+        material="color:#0b0b0b; emissive:#ff2bd6; emissiveIntensity:0.22;">
+        <a-animation attribute="material.emissiveIntensity" dur="2600" dir="alternate" to="0.42" repeat="indefinite"></a-animation>
+      </a-box>
+    </a-entity>
+
+    <!-- Firefly lights -->
+    <a-sphere radius="0.03" position="-1.2 2.2 2.0" material="color:#ffffff; emissive:#00ffd0; emissiveIntensity:1.2;">
+      <a-animation attribute="position" dur="9000" direction="alternate" repeat="indefinite" to="-2.0 2.6 -10.0" easing="easeInOutSine"></a-animation>
+    </a-sphere>
+    <a-sphere radius="0.03" position="1.6 2.5 -6.0" material="color:#ffffff; emissive:#ff2bd6; emissiveIntensity:1.0;">
+      <a-animation attribute="position" dur="11000" direction="alternate" repeat="indefinite" to="2.3 2.2 -22.0" easing="easeInOutSine"></a-animation>
+    </a-sphere>
+    <a-sphere radius="0.03" position="0.3 2.8 -18.0" material="color:#ffffff; emissive:#3a86ff; emissiveIntensity:0.9;">
+      <a-animation attribute="position" dur="12000" direction="alternate" repeat="indefinite" to="-0.6 2.4 -40.0" easing="easeInOutSine"></a-animation>
+    </a-sphere>
+
+    <!-- ROOMS (containers) -->
+    <a-entity id="room_all"></a-entity>
+    <a-entity id="room_redes"></a-entity>
+    <a-entity id="room_promo"></a-entity>
+    <a-entity id="room_marca"></a-entity>
+    <a-entity id="room_web"></a-entity>
+    <a-entity id="room_musica"></a-entity>
+
+    <!-- Reels walls per room -->
+    <a-entity id="reels_all"></a-entity>
+    <a-entity id="reels_redes"></a-entity>
+    <a-entity id="reels_promo"></a-entity>
+    <a-entity id="reels_marca"></a-entity>
+    <a-entity id="reels_web"></a-entity>
+    <a-entity id="reels_musica"></a-entity>
+
+    <!-- CAMERA RIG -->
+    <a-entity id="rig" position="0 0 6.2">
+      <a-entity id="playerCam" camera position="0 1.6 0" look-controls wasd-controls="acceleration: 28; fly: false">
+        <a-cursor fuse="false" raycaster="objects: .clickable" color="#00ffd0"></a-cursor>
+      </a-entity>
+
+      <a-entity id="rightHand" laser-controls="hand: right" raycaster="objects: .clickable, .teleportable" line="color: #00ffd0; opacity: 0.92"></a-entity>
+      <a-entity id="leftHand"  laser-controls="hand: left" raycaster="objects: .clickable, .teleportable" line="color: #66b8ff; opacity: 0.85"></a-entity>
+      <a-ring id="tpReticle" visible="false" radius-inner="0.20" radius-outer="0.28" rotation="-90 0 0"
+        material="color:#00ffd0; emissive:#00ffd0; emissiveIntensity:0.75; opacity:0.95; transparent:true"></a-ring>
+    </a-entity>
+
+    <script src="assets/sfx.js"></script>
+    <script src="assets/vr.js"></script>
+  </a-scene>
+  <script src="assets/img-reveal.js"></script>
+</body>
+</html>
